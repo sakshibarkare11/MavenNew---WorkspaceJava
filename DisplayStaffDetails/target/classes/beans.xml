@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+<!-- fill the code -->
+<bean id="StaffObject" class="com.spring.app.Staff">
+        <constructor-arg value="1"/>                   <!-- staffId -->
+        <constructor-arg value="Ragul"/>               <!-- staffName -->
+        <constructor-arg value="CSE"/>                 <!-- departmentName -->
+        <constructor-arg value="9445543300"/>          <!-- contactNo -->
+    </bean>
+
+    <!-- Department Bean Definition -->
+    <bean id="DepartmentObject" class="com.spring.app.Department">
+        <constructor-arg value="123" type="int"/>      <!-- departmentId -->
+        <constructor-arg>	
+            <list>	
+                <ref bean="StaffObject"/>               <!-- Reference to StaffBean -->
+                <!-- You can add more staff objects here if needed -->
+            </list>	
+        </constructor-arg>
+    </bean>
+
+
+  
+</beans>
