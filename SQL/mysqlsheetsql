@@ -1,0 +1,320 @@
+
+--23-2-23
+select last_name, to_char(hire_date,'fm Month DD YYYY')
+as hiredate from hr.employees;
+
+SELECT EMPLOYEE_ID,HIRE_DATE ,to_char(hire_date,'fm yyyy MONTH dd'),
+to_char(hire_date,'fm ddspth'),
+to_char(hire_date,'fm HH24:MI:SS AM'),
+TO_CHAR(HIRE_DATE,'fm yyyy day')
+from hr.employees;
+
+--fm element remove padded blanks or suppress leading zero 2nd month can be written as 02 also
+--fm >>> avoid blank spaces and it is an optional
+--ddspth for position
+--HH24:MI:SS AM >> 15:45:32 PM
+
+SELECT  to_char( sysdate,'fm MONTH dd YYYY HH24:MI:SS AM dd"th of" MONTH'),
+to_char(sysdate, 'dd"th of" MONTH')
+from dual;
+
+--TO_CHAR FUNCTION WITH  NUMBERS
+--9 >> represent a number
+--$ >> places a floating dollar sign
+--L >> Uses the floating local currency symbol
+
+select to_char(2787,'L99,999.99'),
+to_char(2567787,'L99,999.99'),
+to_char(2787,'L9,9,99,9.99')
+from dual;
+
+select employee_id,salary,to_char(salary,'fm$9,99,999.00')
+from hr.employees;
+
+ select to_char('12-3-12','fm YYYY MONTH dd')
+ from dual;
+
+--TO_DATE FUNCTION
+ 
+select to_char(to_date('12-3-12','fm yy mm dd'),'fm YYYY MONTH dd')
+from dual;
+ 
+ 
+ 
+ SELECT last_name, TO_CHAR(hire_date, 'fmDD Mon YYYY  ')
+FROM  hr.employees
+WHERE hire_date < TO_DATE('01-Jan-90','DD-Mon-RR');
+
+select employee_id,hire_date
+from hr.employees
+where hire_date < '01-JAN-90';
+
+select employee_id,hire_date
+from hr.employees
+where hire_date < to_date('90 JAN 01','fm yy mon dd');
+
+
+SELECT last_name,commission_pct, NVL(commission_pct, 0),
+salary,(salary+nvl(commission_pct,0))as sal,
+(salary+nvl(commission_pct,0))*12 as AnnSal
+FROM hr.employees;
+
+
+SELECT last_name,commission_pct, NVL(commission_pct, 0),
+ nvl2(commission_pct,'sal+comm','sal'),
+  nvl2(commission_pct,salary+commission_pct , salary)
+FROM hr.employees;
+
+
+select employee_id,first_name,manager_id,
+nvl2(manager_id,'Has manager','Not manager')
+from hr.employees;
+
+select last_name,job_id,salary,
+case job_id when 'IT_PROG' then salary*100
+            when 'PU_CLERK' then  salary*10
+            else salary end 
+            as "new salary"
+            
+from hr.employees;
+ 
+
+
+select last_name,job_id,salary,
+case job_id when 'IT_PROG' then salary*10
+            when 'FI_MGR' then salary*100
+            when 'AD_VP' then salary*20
+            
+            else salary end as "NEW SAL"  
+from hr. employees;
+
+
+
+--24-2-23
+
+select last_name,job_id,salary,
+case job_id when 'IT_PROG' then salary*10
+            when 'FI_MGR' then salary*100
+            when 'AD_VP' then salary*20
+            
+            else salary+100 end as "NEW SAL"  
+from employees;
+
+SELECT last_name, job_id, salary,
+       DECODE(job_id, 'IT_PROG',  10*salary,
+                      'FI_MGR', 100*salary,
+                      'AD_VP',   20*salary,
+              salary)
+       REVISED_SALARY
+FROM   employees;
+
+select   
+case &b  when 1 then 'one'
+            when 2 then 'two'
+            when 3 then 'three'
+            else 'zero' end "NEWCOL"
+from dual;
+
+select last_name,job_id ,salary,
+case salary when 10000 then salary*10
+            when 8000 then salary*100
+            when 24000 then salary*20
+            
+            else salary end as "NEW SAL"  
+from employees;
+
+select last_name,job_id,salary,
+decode(salary,10000,salary*10,8000,salary*100,24000,salary*20,salary)
+"NEW SAL"  
+from employees;
+
+
+SELECT last_name,salary, 
+CASE WHEN salary<5000 THEN 'Low' 
+      WHEN salary<10000 THEN 'Medium' 
+      WHEN salary<20000 THEN 'Good' 
+      ELSE 'Excellent' 
+END qualified_salary 
+FROM employees;
+
+SELECT last_name,salary, 
+CASE salary WHEN <5000 THEN 'Low' 
+        WHEN <10000 THEN 'Medium' 
+        WHEN <20000 THEN 'Good' 
+      ELSE 'Excellent' 
+END qualified_salary 
+FROM employees;
+
+
+
+select salary from employees
+order by salary desc;
+
+select max(salary)
+from employees;
+
+select salary
+from employees
+where employee_id>203;
+
+select max(salary),sum(salary),avg(salary)
+from employees
+where employee_id>203;
+
+
+select employee_id,max(salary) 
+from employees;
+
+select count(*)
+from employees;
+ 
+ select count(nvl(manager_id,0))
+from employees;
+
+ select distinct(manager_id)
+from employees;
+ 
+ select distinct(department_id)
+ from employees;
+ 
+select  max(salary) 
+from employees
+group by department_id;
+
+select salary,  max(salary) 
+from employees
+group by salary;
+
+SELECT   department_id, job_id, SUM(salary)
+FROM     employees
+WHERE	 department_id > 40
+GROUP BY department_id, job_id 
+ORDER BY department_id;
+
+
+
+
+
+
+--24-2-23
+
+select last_name,job_id,salary,
+case job_id when 'IT_PROG' then salary*10
+            when 'FI_MGR' then salary*100
+            when 'AD_VP' then salary*20
+            
+            else salary+100 end as "NEW SAL"  
+from employees;
+
+SELECT last_name, job_id, salary,
+       DECODE(job_id, 'IT_PROG',  10*salary,
+                      'FI_MGR', 100*salary,
+                      'AD_VP',   20*salary,
+              salary)
+       REVISED_SALARY
+FROM   employees;
+
+select   
+case &b  when 1 then 'one'
+            when 2 then 'two'
+            when 3 then 'three'
+            else 'zero' end "NEWCOL"
+from dual;
+
+select last_name,job_id ,salary,
+case salary when 10000 then salary*10
+            when 8000 then salary*100
+            when 24000 then salary*20
+            
+            else salary end as "NEW SAL"  
+from employees;
+
+select last_name,job_id,salary,
+decode(salary,10000,salary*10,8000,salary*100,24000,salary*20,salary)
+"NEW SAL"  
+from employees;
+
+
+SELECT last_name,salary, 
+CASE WHEN salary<5000 THEN 'Low' 
+      WHEN salary<10000 THEN 'Medium' 
+      WHEN salary<20000 THEN 'Good' 
+      ELSE 'Excellent' 
+END qualified_salary 
+FROM employees;
+
+SELECT last_name,salary, 
+CASE salary WHEN <5000 THEN 'Low' 
+        WHEN <10000 THEN 'Medium' 
+        WHEN <20000 THEN 'Good' 
+      ELSE 'Excellent' 
+END qualified_salary 
+FROM employees;
+
+select salary from employees
+order by salary desc;
+
+select max(salary)
+from employees;
+
+select salary
+from employees
+where employee_id>203;
+
+select max(salary),sum(salary),avg(salary)
+from employees
+where employee_id>203;
+
+
+select employee_id,max(salary) 
+from employees;
+
+select count(*)
+from employees;
+ 
+ select count(nvl(manager_id,0))
+from employees;
+
+ select distinct(manager_id)
+from employees;
+ 
+ select distinct(department_id)
+ from employees;
+ 
+select  max(salary) 
+from employees
+group by department_id;
+
+select salary,  max(salary) 
+from employees
+group by salary;
+
+SELECT   department_id, job_id, SUM(salary)
+FROM     employees
+WHERE	 department_id > 40
+GROUP BY department_id, job_id 
+ORDER BY department_id;
+
+
+select department_id,max(salary)
+from employees;
+
+where department_id>100
+having max(salary)>10000
+group by department_id
+;
+
+
+SELECT   job_id, SUM(salary) PAYROLL
+FROM     employees
+WHERE    job_id NOT LIKE '%REP%'
+GROUP BY job_id
+HAVING   SUM(salary) > 13000
+ORDER BY SUM(salary);
+
+
+
+
+
+
+
